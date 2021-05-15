@@ -1,20 +1,33 @@
 const initialState = {
-    age:20
+    loading: false,
+    data: [],
+    errors: null
 };
 
 const reducer = (state=initialState, action) => {
-    const newState = {...state};
-
     switch(action.type){
-        case 'AGE_UP_ASYNC':
-            newState.age += action.value;
-            break;
+        case 'API_RESPONSE_CALL':
+            return {
+                ...state,
+                loading:false
+            }
 
-        case 'AGE_DOWN':
-            newState.age -= action.value;
-            break;
+        case 'API_RESPONSE_SUCCESS':
+            return {
+                ...state,
+                loading: false,
+                data: action.payload
+            };
+
+        case 'API_RESPONSE_FAIL':
+            return {
+                ...state,
+                loading: false,
+                data: action.payload
+            };
+        default:
+            return state;
     }
-    return newState;
 };
 
 export default reducer;

@@ -1,10 +1,17 @@
-import { put, takeLatest, delay } from 'redux-saga/effects';
+import { put, takeLatest, call } from 'redux-saga/effects';
+import { fetchData } from "../api";
+import { loadPostData, loadPostSuccess, loadPostFailure } from "../store/actions";
 
-function* ageUpAsync() {
-    yield delay(4000);
-    yield put({ type: 'AGE_UP_ASYNC', value: 1 });
+export function* API_RESPONSE_ASYNC()
+{
+    try {
+        const response = yield call(fetchData);
+        yield put(loadPostSuccess(response));
+    } catch (e) {
+        yield put(loadPostFailure(e));
+    }
 }
 
-export function* watchAgeUp() {
-    yield takeLatest('AGE_UP', ageUpAsync);
+export function* watchAPI() {
+    yield takeLatest(loadPostData, API_RESPONSE_ASYNC);
 }
